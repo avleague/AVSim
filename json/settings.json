@@ -1,0 +1,37 @@
+{
+  "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
+  "SettingsVersion": 1.2,
+  "SimMode" : "Car",
+  "RpcEnabled": true,
+  "DefaultCar": {"PawnBP":"Class'/Game/SportsCar/BP_SportsCar.BP_SportsCar_C'"},
+  "EngineSound": false,
+  "Vehicles": {
+      "Car1": {
+          "VehicleType": "PhysXCar",
+          "EnableCollisionPassthrough": true,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+       }
+   },
+  "DefaultSensors": {
+      "Lidar": {
+          "SensorType": 6,
+          "Enabled": false,
+          "DrawDebugPoints": false
+      }
+   },
+  "CameraDefaults": {
+      "CaptureSettings": [
+        {
+          "ImageType": 0,
+          "Width": 320,
+          "Height": 240,
+          "FOV_Degrees": 90,
+          "AutoExposureSpeed": 100,
+          "MotionBlurAmount": 0
+        }
+    ]
+  }
+  
+}
