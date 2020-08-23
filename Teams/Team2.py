@@ -17,19 +17,19 @@ class Team2(TeamsMethods,object):
     
     def goFront(self):
         print("ENTREI")
-        self.setGas(0.5)
+        self.setThrottle(0.5)
         self.setSteering(0.0)
         self.setBrake(0.0)
         
     def stop(self):
         print("PAREI")
-        self.setGas(0.0)
+        self.setThrottle(0.0)
         self.setSteering(0.0)
         self.setBrake(1.0)
         
     def reverse (self):    
         print("ENTREI")
-        self.setGas(-0.5)
+        self.setThrottle(-0.5)
         self.setSteering(0.0)
         self.setBrake(0.0)
         

@@ -14,19 +14,19 @@ cm = CarMethods()
 
 class Team1(TeamsMethods,object):
 
-    def gas(self):
+    def longitudinalControl(self):
         while self.getThreadFlag():
             
             cm.printHomePosition()
             
-            self.setGas(self.getGas() + 0.001)
-            print('gas: ' + str(self.getGas()))
+            self.setThrottle(self.getThrottle() + 0.001)
+            print('gas: ' + str(self.getThrottle()))
             
             cv2.imshow('my webcam', cm.getCameraShoot())
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 pass
             
-    def steering(self):
+    def lateralControl(self):
         while self.getThreadFlag():
             self.setSteering(self.getSteering() + 0.001)
             print('steering: ' + str(self.getSteering()))

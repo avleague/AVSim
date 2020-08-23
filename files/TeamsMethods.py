@@ -12,9 +12,9 @@ import time
 ## =============================== TEAM METHODS ============================== ##        
 #################################################################################
 
-threads = [threading.Thread(),threading.Thread(),threading.Thread(),threading.Thread()]
+threads = [threading.Thread(),threading.Thread(),threading.Thread()]
 
-gas = 0.0
+throttle = 0.0
 brake = 0.0
 steering = 0.0
         
@@ -28,16 +28,15 @@ class TeamsMethods(object):
     
     def __init__(self):
         global threads
-        threads[0] = threading.Thread(target=self.gas, args=(),daemon = True)
-        threads[1] = threading.Thread(target=self.brake, args=(),daemon = True)
-        threads[2] = threading.Thread(target=self.steering, args=(),daemon = True)
-        threads[3] = threading.Thread(target=self.update, args=(),daemon = True)
+        threads[0] = threading.Thread(target=self.longitudinalControl, args=(),daemon = True)
+        threads[1] = threading.Thread(target=self.lateralControl, args=(),daemon = True)
+        threads[2] = threading.Thread(target=self.update, args=(),daemon = True)
         
     ## ============================= GETTERS AND SETTERS ======================
     
-    def setGas(self, value):
-        global gas
-        gas = value
+    def setThrottle(self, value):
+        global throttle
+        throttle = value
     
     def setBrake(self, value):
         global brake
@@ -47,9 +46,9 @@ class TeamsMethods(object):
         global steering
         steering = value
     
-    def getGas(self):
-        global gas
-        return gas
+    def getThrottle(self):
+        global throttle
+        return throttle
     
     def getBrake(self):
         global brake
@@ -83,7 +82,6 @@ class TeamsMethods(object):
         threads[0].start()
         threads[1].start()
         threads[2].start()
-        threads[3].start()
     
     def stopThreads(self):
         global threadFlag
@@ -96,13 +94,9 @@ class TeamsMethods(object):
         pass
 
     @abc.abstractmethod 
-    def gas(self):
+    def longitudinalControl(self):
         pass
     
     @abc.abstractmethod 
-    def brake(self):
-        pass
-    
-    @abc.abstractmethod 
-    def steering(self):
+    def lateralControl(self):
         pass

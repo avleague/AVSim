@@ -55,19 +55,41 @@ class CarMethods(object):
         return self.getClient().getHomeGeoPoint().longitude
     
     def getSpeed(self):
+        # In m/s
         return self.getClient().getCarState('Car1').speed
     
-    def getIMU_Data(self):
-        return self.getClient().getImuData(None,'Car1')
+    def getCarPose(self):
+        return self.getClient().simGetVehiclePose("Car1") 
     
-    def getLIDAR_Data(self):
-        return self.getClient().getLidarData('Lidar','Car1')
+    def getEstimatedPos(self):
+        return self.getClient().getCarState('Car1').kinematics_estimated.position
+    
+    def getEstimatedOrientation(self):
+        return self.getClient().getCarState('Car1').kinematics_estimated.orientation
+    
+    def getIMU_Data(self):
+        return self.getClient().getImuData('IMU','Car1')
+    
+    def getIMU_AngularVelocity(self):
+        return self.getClient().getImuData('IMU','Car1').angular_velocity
+    
+    def getIMU_LinearAcceleration(self):
+        return self.getClient().getImuData('IMU','Car1').linear_acceleration
+    
+    def getIMU_Orientation(self):
+        return self.getClient().getImuData('IMU','Car1').orientation
     
     def getSONAR_Data(self):
-        return self.getClient().getDistanceSensorData(None,'Car1')
+        return self.getClient().getDistanceSensorData('Distance','Car1').distance
+    
+    def getLIDAR_Data(self):
+        return self.getClient().getLidarData('LIDAR','Car1')
+    
+    def getLIDAR_PointCloud(self):
+        return self.getClient().getLidarData('LIDAR','Car1').point_cloud
     
     def getGPS_Data(self):
-        return self.getClient().getGpsData(None,'Car1')
+        return self.getClient().getGpsData('GPS','Car1')
         
     def getCameraShoot(self):
         images = self.getClient().simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene,False,False)])
@@ -88,6 +110,14 @@ team = TeamsMethods()
 client = None
 car_controls = None
 controlAirSim = True
+manualMode = False
+
+position_map = []
+speed_map = []
+throttle_map = []
+brake_map = []
+steering_map = []
+        
 
 class Tournament():
 
@@ -156,9 +186,16 @@ class Tournament():
     def __airSimClientConnection(self):
         global client, clientCM
         self.__setClient(airsim.CarClient(timeout_value = 10000))
-        self.__setClientCM(airsim.VehicleClient())
+        self.__setClientCM(airsim.CarClient())
         self.getClient().confirmConnection()
-        self.getClient().enableApiControl(True)
+        
+        print("Do you want to activate the manual mode? [y/n]")
+        if input() == 'n':
+            manualMode = False
+            self.getClient().enableApiControl(True)
+        else:
+            manualMode = True
+            
         self.__setCarControls(airsim.CarControls())
         time.sleep(2)
         
@@ -178,9 +215,8 @@ class Tournament():
             pprint.pformat(collision_info.impact_point), 
             collision_info.penetration_depth, collision_info.object_name, collision_info.object_id))
     
-    def __updateCarControls(self):
-        
-        throttle = self.getTeam().getGas()
+    def __updateCarControls(self):      
+        throttle = self.getTeam().getThrottle()
         self.getCarControls().throttle = throttle
         
         if(throttle >= 0.0): ## Activate Automatic gear
@@ -193,6 +229,14 @@ class Tournament():
         self.getCarControls().brake = self.getTeam().getBrake()
         self.getCarControls().steering = self.getTeam().getSteering()
         self.getClient().setCarControls(self.getCarControls())
+        
+    def __updateReport(self):
+        global position_map, speed_map, throttle_map, brake_map, steering_map
+        position_map.append(self.getClient().simGetVehiclePose("Car1").position)    
+        speed_map.append(self.getClient().getCarState('Car1').speed)
+        throttle_map.append(self.getTeam().getThrottle())
+        brake_map.append(self.getTeam().getBrake())
+        steering_map.append(self.getTeam().getSteering())
         
     def run(self,env):
         osys = platform.system()
@@ -218,9 +262,10 @@ class Tournament():
         elif(osys == 'Linux' or os == 'Darwin'):
             cmdCommand = 'cd ' + pathFolder + unrealEnvironment + ' && ./' + environ + '.exe' + resolution + ' -windowed'
    
-        os.system(cmdCommand) 
+        #os.system(cmdCommand) 
         
         ## Variable that control the Unreal launch
+        global position_map, speed_map, throttle_map, brake_map, steering_map
         global controlAirSim
         controlAirSim = True
         
@@ -254,15 +299,18 @@ class Tournament():
                 ## While loop running for updating gas, brake, steering and update. This while only stops when a vehicle 
                 ## crashes or team tell they have finished the simulation
                 while(not(self.getTeam().hasFinished())):
-                    self.__updateCarControls()
+                    if(not(manualMode())):
+                        self.__updateCarControls()
+                    self.__updateReport()
                     
                     if(self.getClient().simGetCollisionInfo().has_collided):
                         self.__collisionPrint(self.getClient().simGetCollisionInfo())
-                        #break
+                        break
                 
                 self.getTeam().stopThreads()
                 time.sleep(5)
                 
+                print(position_map)
                 ## Puts the vehicle in the initial position
                 self.getClient().reset()
 
@@ -270,7 +318,7 @@ class Tournament():
                 self.getClient().enableApiControl(False)
                 
                 ## Close the lauched application
-                if(osys == 'Windows'):
-                    os.system('TASKKILL /F /IM ' + environ + '.exe')
-                elif(osys == 'Linux' or os == 'Darwin'):
-                    os.system('pkill ' + environ + '.exe')
+                #if(osys == 'Windows'):
+                #    os.system('TASKKILL /F /IM ' + environ + '.exe')
+                #elif(osys == 'Linux' or os == 'Darwin'):
+                   #os.system('pkill ' + environ + '.exe')
