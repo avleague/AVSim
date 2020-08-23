@@ -1,5 +1,3 @@
 # ignore all logs
 *.log
-Unreal\ Environments/City/
-Unreal\ Environments/SimpleMaze/
-Unreal\ Environments/Soccer_Field/
+Unreal\ Environments/*/
