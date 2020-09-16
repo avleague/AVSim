@@ -87,6 +87,18 @@ class TeamsMethods(object):
         global threadFlag
         threadFlag = False        
         
+    def clearVariables(self):
+        global threads, throttle, brake, steering, initialTime, finished, threadFlag
+        threads.clear()
+        threads = [threading.Thread(),threading.Thread(),threading.Thread()]
+
+        throttle = 0.0
+        brake = 0.0
+        steering = 0.0
+        
+        initialTime = 0.0
+        finished = False
+        threadFlag = False
     ## ============================= ABSTRACT METHODS =========================
     
     @abc.abstractmethod 

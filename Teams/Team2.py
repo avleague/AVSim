@@ -16,19 +16,19 @@ class Team2(TeamsMethods,object):
     ## ============================== MOVING METHODS ==========================
     
     def goFront(self):
-        print("ENTREI")
+        print("FORWARD")
         self.setThrottle(0.5)
         self.setSteering(0.0)
         self.setBrake(0.0)
         
     def stop(self):
-        print("PAREI")
+        print("STOP")
         self.setThrottle(0.0)
         self.setSteering(0.0)
         self.setBrake(1.0)
         
     def reverse (self):    
-        print("ENTREI")
+        print("BACKWARD")
         self.setThrottle(-0.5)
         self.setSteering(0.0)
         self.setBrake(0.0)

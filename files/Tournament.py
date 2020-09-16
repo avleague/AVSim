@@ -14,6 +14,7 @@ import platform
 import threading
 import numpy as np
 
+
 MAZE = 0
 AIRSIMNH = 1
 BLOCKS = 2
@@ -123,9 +124,9 @@ class Tournament():
 
     ## =========================== CONSTRUCTORS ==============================         
     
-    def __init__(self,team,env = 0):
+    def __init__(self,team,environ):
         self.__setTeam(team)
-        self.run(env)
+        self.run(environ)
     
     ## ======================= SETTERS AND GETTERS ===========================         
     
@@ -159,32 +160,9 @@ class Tournament():
     
     ## ============================= METHODS ================================= 
     
-    def __chooseEnvironment(self,env):
-        if(env == MAZE):
-            unrealEnvironment = 'SimpleMaze'
-            environ = 'Car_Maze'
-        elif (env == AIRSIMNH):
-            unrealEnvironment = 'Neighborhood'
-            environ = 'AirSimNH'
-        elif (env == BLOCKS):
-            unrealEnvironment = 'Blocks'
-            environ = unrealEnvironment
-        elif (env == CITY):
-            unrealEnvironment = 'City'
-            environ = 'CityEnviron'
-        elif (env == COASTLINE):
-            unrealEnvironment = 'Coastline'
-            environ = unrealEnvironment
-        elif (env == LANDSCAPE):
-            unrealEnvironment = 'LandscapeMountains'
-            environ = unrealEnvironment
-        elif (env == SOCCER):
-            unrealEnvironment = 'Soccer_Field'
-            environ = unrealEnvironment
-        return (unrealEnvironment, environ)
-    
     def __airSimClientConnection(self):
-        global client, clientCM
+        global client, clientCM, manualMode
+        
         self.__setClient(airsim.CarClient(timeout_value = 10000))
         self.__setClientCM(airsim.CarClient())
         self.getClient().confirmConnection()
@@ -238,35 +216,25 @@ class Tournament():
         brake_map.append(self.getTeam().getBrake())
         steering_map.append(self.getTeam().getSteering())
         
-    def run(self,env):
-        osys = platform.system()
-        
-        ## pathFolder defines the folder that contains your Unreal/Unity Environments
-        #pathFolder = 'C:/Users/Gilmar Correia/Downloads/Unreal Environments/'
-        if(osys == 'Windows'):
-            pathFolder = './Unreal Environments/'
-        elif(osys == 'Linux' or os == 'Darwin'):
-            pathFolder = './Unreal\ Environments/'
-            
-        ## Both unrealEnvironment and environ are initializate with the function chooseEnviroment
-        unrealEnvironment, environ = self.__chooseEnvironment(env)
-        
-        ## Defines de resolution that Unreal will start
-        resolution = ' -ResX=640 -ResY=480'
-            
-        ## Executable commands for launch automatically the unrealEnviroment and its respectively environ,
-        ## according to AirSim documentation this application can be executable with OpenGL by changing the
-        ## -windowed to -opengl
-        if(osys == 'Windows'):
-            cmdCommand = 'cd ' + pathFolder + unrealEnvironment + '& start ' + environ + resolution + ' -windowed'
-        elif(osys == 'Linux' or os == 'Darwin'):
-            cmdCommand = 'cd ' + pathFolder + unrealEnvironment + ' && ./' + environ + '.exe' + resolution + ' -windowed'
-   
-        #os.system(cmdCommand) 
-        
+    def __clearVariables(self):
+        global team, client, car_controls, controlAirSim, manualMode, position_map, speed_map, throttle_map, brake_map, steering_map, clientCM
+        team = TeamsMethods()
+        client = None
+        clientCM = None
+        car_controls = None
+        controlAirSim = True
+        manualMode = False
+
+        position_map.clear()
+        speed_map.clear()
+        throttle_map.clear()
+        brake_map.clear()
+        steering_map.clear()
+    
+    def run(self,environ):        
         ## Variable that control the Unreal launch
         global position_map, speed_map, throttle_map, brake_map, steering_map
-        global controlAirSim
+        global controlAirSim, manualMode
         controlAirSim = True
         
         while(controlAirSim):
@@ -299,7 +267,7 @@ class Tournament():
                 ## While loop running for updating gas, brake, steering and update. This while only stops when a vehicle 
                 ## crashes or team tell they have finished the simulation
                 while(not(self.getTeam().hasFinished())):
-                    if(not(manualMode())):
+                    if(not(manualMode)):
                         self.__updateCarControls()
                     self.__updateReport()
                     
@@ -308,9 +276,10 @@ class Tournament():
                         break
                 
                 self.getTeam().stopThreads()
+                self.getTeam().clearVariables()
                 time.sleep(5)
                 
-                print(position_map)
+                #print(position_map)
                 ## Puts the vehicle in the initial position
                 self.getClient().reset()
 
@@ -322,3 +291,5 @@ class Tournament():
                 #    os.system('TASKKILL /F /IM ' + environ + '.exe')
                 #elif(osys == 'Linux' or os == 'Darwin'):
                    #os.system('pkill ' + environ + '.exe')
+            
+        self.__clearVariables()
