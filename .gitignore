@@ -1,3 +1,4 @@
-# ignore all logs
+#ignore all logs
 *.log
-UnrealEnvironments/*/
+
+simulator/UnrealEnvironments/*

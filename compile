@@ -1,0 +1,1 @@
+stack ghc -- -o AVSim.exe --make src\JSElem.hs src\UIElem.hs src\Pages.hs src\Main.hs
