@@ -29,12 +29,12 @@ version :: Version
 version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "C:\\Users\\GilmarCorreia\\Desktop\\2020-qs-paradigmas-diurno-projetofinal-GilmarCorreia\\AVSim\\.stack-work\\install\\c8ffcdf2\\bin"
-libdir     = "C:\\Users\\GilmarCorreia\\Desktop\\2020-qs-paradigmas-diurno-projetofinal-GilmarCorreia\\AVSim\\.stack-work\\install\\c8ffcdf2\\lib\\x86_64-windows-ghc-8.8.4\\AVSim-0.1.0.0-3DlTCKaOXh41H1xmfY1dqh-AVSim"
-dynlibdir  = "C:\\Users\\GilmarCorreia\\Desktop\\2020-qs-paradigmas-diurno-projetofinal-GilmarCorreia\\AVSim\\.stack-work\\install\\c8ffcdf2\\lib\\x86_64-windows-ghc-8.8.4"
-datadir    = "C:\\Users\\GilmarCorreia\\Desktop\\2020-qs-paradigmas-diurno-projetofinal-GilmarCorreia\\AVSim\\.stack-work\\install\\c8ffcdf2\\share\\x86_64-windows-ghc-8.8.4\\AVSim-0.1.0.0"
-libexecdir = "C:\\Users\\GilmarCorreia\\Desktop\\2020-qs-paradigmas-diurno-projetofinal-GilmarCorreia\\AVSim\\.stack-work\\install\\c8ffcdf2\\libexec\\x86_64-windows-ghc-8.8.4\\AVSim-0.1.0.0"
-sysconfdir = "C:\\Users\\GilmarCorreia\\Desktop\\2020-qs-paradigmas-diurno-projetofinal-GilmarCorreia\\AVSim\\.stack-work\\install\\c8ffcdf2\\etc"
+bindir     = "C:\\Users\\GilmarCorreia\\Desktop\\AVSim\\.stack-work\\install\\c8ffcdf2\\bin"
+libdir     = "C:\\Users\\GilmarCorreia\\Desktop\\AVSim\\.stack-work\\install\\c8ffcdf2\\lib\\x86_64-windows-ghc-8.8.4\\AVSim-0.1.0.0-3DlTCKaOXh41H1xmfY1dqh-AVSim"
+dynlibdir  = "C:\\Users\\GilmarCorreia\\Desktop\\AVSim\\.stack-work\\install\\c8ffcdf2\\lib\\x86_64-windows-ghc-8.8.4"
+datadir    = "C:\\Users\\GilmarCorreia\\Desktop\\AVSim\\.stack-work\\install\\c8ffcdf2\\share\\x86_64-windows-ghc-8.8.4\\AVSim-0.1.0.0"
+libexecdir = "C:\\Users\\GilmarCorreia\\Desktop\\AVSim\\.stack-work\\install\\c8ffcdf2\\libexec\\x86_64-windows-ghc-8.8.4\\AVSim-0.1.0.0"
+sysconfdir = "C:\\Users\\GilmarCorreia\\Desktop\\AVSim\\.stack-work\\install\\c8ffcdf2\\etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "AVSim_bindir") (\_ -> return bindir)

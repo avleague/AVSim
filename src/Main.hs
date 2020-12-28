@@ -27,17 +27,29 @@ type CodeName = String
 
 -- main inicializa a GUI
 main :: IO ()
-main = startGUI defaultConfig {jsLog = \_ -> return ()} setup
+main = do
+  let config = (shell "rundll32 url.dll,FileProtocolHandler http://127.0.0.1:8023") {
+    std_in = CreatePipe,
+    std_out = CreatePipe,
+    std_err = CreatePipe,
+    --create_new_console = True,
+    create_group = True
+    --use_process_jobs = True
+  }
+  createProcess config
+  startGUI defaultConfig {jsLog = \_ -> return ()} setup
 
 -- setup monta a estrutura da GUI
 setup :: Window -> UI()
 setup window = void $ do
+  
+
   -- Título da página 
   return window # set title "AVSim"
 
   -- Salva o diretório do projeto na função absoluteFolderPath e o diretório do simulador na função simFolderPath  
   absoluteFolderPath <- liftIO getCurrentDirectory
-  let simFolderPath = absoluteFolderPath ++ "/simulator/"
+  let simFolderPath = absoluteFolderPath ++ "\\simulator\\"
 
   
   -- Carrega o diretório para utilizar os arquivos presentes neles
@@ -77,8 +89,10 @@ setup window = void $ do
                                      #+ [UI.a # set UI.text "powered by Autonomous Vehicle League"
                                               # set UI.href "https://avleague.github.io/pt/"
                                               # set (UI.attr "target") "_blank"
-                                              # set UI.style [("color","white"),
+                                              # set UI.style [("position","relative"),
+                                                              ("color","#646464"),
                                                               ("margin-right", "25px"),
+                                                              ("margin-top","5pt"),
                                                               ("display","block"),
                                                               ("vertical-align","middle"),
                                                               ("text-align", "center"),
@@ -101,15 +115,15 @@ setup window = void $ do
                                  ("overflow", "hidden")]
 
   -- Instala as dependências do projeto, se já tiver instalado, não executa as funções
-  depInstall <- liftIO $ doesFileExist $ absoluteFolderPath ++ "/depInstalled.txt"
+  depInstall <- liftIO $ doesFileExist $ absoluteFolderPath ++ "\\depInstalled.txt" 
   
   unless depInstall $ do
     liftIO $ tryCommand window "pip install numpy"
     liftIO $ tryCommand window "pip install matplotlib"
     liftIO $ tryCommand window "pip install airsim"
-    liftIO $ tryCommand window $ "mkdir " ++ concat (take 3 $ splitPath absoluteFolderPath) ++"Documents\\AirSim"
-    liftIO $ tryCommand window $ "copy " ++ absoluteFolderPath ++ "\\simulator\\json\\settings.json " ++ 
-                         concat (take 3 $ splitPath absoluteFolderPath) ++ "Documents\\AirSim\\"
+    liftIO $ tryCommand window $ "mkdir " ++ "\"" ++concat (take 3 $ splitPath absoluteFolderPath) ++"Documents\\AirSim" ++ "\""
+    liftIO $ tryCommand window $ "copy " ++ "\"" ++ absoluteFolderPath ++ "\\simulator\\json\\settings.json" ++ "\" " ++ "\"" ++ 
+                         concat (take 3 $ splitPath absoluteFolderPath) ++ "Documents\\AirSim\\" ++ "\""
     liftIO $ tryCommand window "type nul > depInstalled.txt"
     runFunction $ ffi $ show $ renderJs executeScroll
 
@@ -177,7 +191,7 @@ setup window = void $ do
       runFunction $ ffi $ show $ renderJs executeScroll
   
   on UI.disconnect window $ const $ liftIO $ do
-    setCurrentDirectory absoluteFolderPath 
+    setCurrentDirectory $ "\"" ++absoluteFolderPath ++"\""
 
 
 -- unbox extraí os valores de um tipo Maybe a
@@ -201,7 +215,7 @@ como a resolução e o formato de exibição.
 -}
 launchMap :: Window -> FilePath -> UnrealEnv -> UI ()
 launchMap window simFolderPath ue = do
-  let path = "cd " ++ simFolderPath ++ "UnrealEnvironments/" ++ ue ++ "/"
+  let path = "cd " ++ simFolderPath ++ "UnrealEnvironments\\" ++ ue ++ "\\"
       cmd = "START " ++unrealProgram ue ++ resolution ++ parameters
 
   tryDirectory window path   
@@ -309,10 +323,11 @@ getInput window ph stdin' a2 = loop
 
       when (length text > 1) $ do
         when (ord (last text) == 32) $ do
-          when (init text == "\\z" || init text == "\\c") $ do
+          when (init text == "\\z" || init text == "\\c" || init text == "^C" || init text == "^Z") $ do
             --pid <- liftIO $ getPid ph
             --liftIO $ createProcess (shell $ "taskkill /F /PID "++ show (unbox pid))
             liftIO $ print "Process has been terminated" 
+            updateBox window "\nProcess has been terminated" 
             return (unbox cmdForm) # set UI.value ""
 
             liftIO $ interruptProcessGroupOf ph
