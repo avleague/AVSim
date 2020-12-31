@@ -20,6 +20,8 @@ steering = 0.0
         
 initialTime = 0.0
 finished = False
+turnRight = False
+turnLeft = False
 threadFlag = False
 
 class TeamsMethods(object):
@@ -45,7 +47,15 @@ class TeamsMethods(object):
     def setSteering(self, value):
         global steering
         steering = value
-    
+        
+    def setTurnLeft(self, value):
+        global turnLeft
+        turnLeft = value
+        
+    def setTurnRight(self, value):
+        global turnRight
+        turnRight = value
+           
     def getThrottle(self):
         global throttle
         return throttle
@@ -57,6 +67,14 @@ class TeamsMethods(object):
     def getSteering(self):
         global steering
         return steering
+        
+    def getTurnLeft(self):
+        global turnLeft
+        return turnLeft
+        
+    def getTurnRight(self):
+        global turnRight
+        return turnRight
     
     def getThread(self):
         global thread

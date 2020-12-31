@@ -273,7 +273,15 @@ class Tournament():
                 ## Enable Wheather in Scene: Rain, RoadWetness, Snow, RoadSnow
                 ## MapleLeaf, RoadLeaf, Dust and Fog from 0 to 1.
                 #self.getClient().simEnableWeather(True)
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.Enabled, 1.0);
                 #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.Rain, 1.0);
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.Roadwetness, 1.0);
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.Snow, 1.0);
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.RoadSnow, 1.0);
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.MapleLeaf, 1.0);
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.RoadLeaf, 1.0);
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.Dust, 1.0);
+                #self.getClient().simSetWeatherParameter(airsim.WeatherParameter.Fog, 1.0);
             
                 ## Setting Vehicle Initial Pose:
                 if (environ == 'CityEnviron'):
@@ -307,6 +315,12 @@ class Tournament():
                     
                     plt.plot(xvalue,yvalue,'ro')
                     plt.savefig("poseXY.png")
+                    
+                    if(self.getTeam().getTurnRight()):
+                        self.__printMessage("Turn Right ACTIVATED")
+                    
+                    if(self.getTeam().getTurnLeft()):
+                        self.__printMessage("Turn Left ACTIVATED")
                     
                     if(self.getClient().simGetCollisionInfo().has_collided):
                         self.__collisionPrint(self.getClient().simGetCollisionInfo())

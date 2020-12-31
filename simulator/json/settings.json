@@ -2,6 +2,25 @@
   "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
   "SettingsVersion": 1.3,
   "SimMode" : "Car",
+  "SubWindows": [
+	{"WindowID": 2, "ImageType": 0, "CameraName": "CameraDefaults", "VehicleName": "Car1", "Visible": false}
+  ],
+  "Cameras": {
+	"CameraDefaults": {
+		"CaptureSettings": [
+			{
+			  "ImageType": 0,
+				"Width": 640,
+				"Height": 480,
+				"FOV_Degrees": 120,
+				"AutoExposureSpeed": 100,
+				"MotionBlurAmount": 0
+			}
+		],
+		"X": -0.05, "Y": 0.0, "Z": -1.8,
+		"Pitch": 0.0, "Roll": 0.0, "Yaw": 0.0
+	}
+  },
   "PawnPaths": {
     "BareboneCar": {"PawnBP": "Class'/AirSim/VehicleAdv/Vehicle/VehicleAdvPawn.VehicleAdvPawn_C'"},
     "DefaultCar": {"PawnBP": "Class'/AirSim/VehicleAdv/SUV/SuvCarPawn.SuvCarPawn_C'"}
@@ -39,26 +58,27 @@
                 "DataFrame": "SensorLocalFrame"
 			}
 	    },
-		"CameraDefaults": {
-			"CaptureSettings": [{
-				"ImageType": 0,
-				"Width": 640,
-				"Height": 480,
-				"FOV_Degrees": 90,
-				"AutoExposureSpeed": 100,
-				"MotionBlurAmount": 0
-			}]
+		"Cameras": {
+			"CameraDefaults": {
+				"CaptureSettings": [
+				{
+				  "ImageType": 0,
+					"Width": 640,
+					"Height": 480,
+					"FOV_Degrees": 90,
+					"AutoExposureSpeed": 100,
+					"MotionBlurAmount": 0
+				}
+			  ],
+			  "X": -0.05, "Y": 0.0, "Z": -1.8,
+			  "Pitch": 0.0, "Roll": 0.0, "Yaw": 0.0
+			}
 		}
     }
   },
-  "CameraDefaults": {
-		"CaptureSettings": [{
-			"ImageType": 0,
-			"Width": 640,
-			"Height": 480,
-			"FOV_Degrees": 90,
-			"AutoExposureSpeed": 100,
-			"MotionBlurAmount": 0
-		}]
-	}
+  "Recording": {
+    "Cameras": [
+        { "CameraName": "CameraDefaults", "ImageType": 0, "PixelsAsFloat": false, "Compress": true }
+    ]
+  }
 }		
