@@ -11,9 +11,9 @@ Arquivo contém definições de html e css dos elementos da GUI
 
 folderPath,mapsPath,codesPath :: [Char]
 --absoluteFolderPath = "C:/Users/GilmarCorreia/Desktop/2020-qs-paradigmas-diurno-projetofinal-GilmarCorreia/AVSim/simulator/"
-folderPath = ".\\simulator\\"
-mapsPath = folderPath ++ "UnrealEnvironments\\"
-codesPath = folderPath ++ "Teams\\"
+folderPath = "./simulator/"
+mapsPath = folderPath ++ "UnrealEnvironments/"
+codesPath = folderPath ++ "Teams/"
 
 listOfMaps, listOfCodes :: IO [FilePath]
 listOfMaps = getDirectoryContents mapsPath

@@ -16,7 +16,7 @@ import System.Process
 import System.Process.Internals
 import System.Directory
 import System.IO
-import System.FilePath.Windows
+import System.FilePath.Posix
 import qualified Graphics.UI.Threepenny as UI
 import Graphics.UI.Threepenny.Core
 
@@ -28,7 +28,7 @@ type CodeName = String
 -- main inicializa a GUI
 main :: IO ()
 main = do
-  let config = (shell "rundll32 url.dll,FileProtocolHandler http://127.0.0.1:8023") {
+  let config = (shell "sensible-browser http://127.0.0.1:8023") {
     std_in = CreatePipe,
     std_out = CreatePipe,
     std_err = CreatePipe,
@@ -49,7 +49,7 @@ setup window = void $ do
 
   -- Salva o diretório do projeto na função absoluteFolderPath e o diretório do simulador na função simFolderPath  
   absoluteFolderPath <- liftIO getCurrentDirectory
-  let simFolderPath = absoluteFolderPath ++ "\\simulator\\"
+  let simFolderPath = absoluteFolderPath ++ "/simulator/"
 
   
   -- Carrega o diretório para utilizar os arquivos presentes neles
@@ -115,16 +115,15 @@ setup window = void $ do
                                  ("overflow", "hidden")]
 
   -- Instala as dependências do projeto, se já tiver instalado, não executa as funções
-  depInstall <- liftIO $ doesFileExist $ absoluteFolderPath ++ "\\depInstalled.txt" 
+  depInstall <- liftIO $ doesFileExist $ absoluteFolderPath ++ "/depInstalled.txt" 
   
   unless depInstall $ do
-    liftIO $ tryCommand window "pip install numpy"
-    liftIO $ tryCommand window "pip install matplotlib"
-    liftIO $ tryCommand window "pip install airsim"
-    liftIO $ tryCommand window $ "mkdir " ++ "\"" ++concat (take 3 $ splitPath absoluteFolderPath) ++"Documents\\AirSim" ++ "\""
-    liftIO $ tryCommand window $ "copy " ++ "\"" ++ absoluteFolderPath ++ "\\simulator\\json\\settings.json" ++ "\" " ++ "\"" ++ 
-                         concat (take 3 $ splitPath absoluteFolderPath) ++ "Documents\\AirSim\\" ++ "\""
-    liftIO $ tryCommand window "type nul > depInstalled.txt"
+    liftIO $ tryCommand window "pip3 install numpy"
+    liftIO $ tryCommand window "pip3 install matplotlib"
+    liftIO $ tryCommand window "pip3 install airsim"
+    liftIO $ tryCommand window "mkdir ~/Documents/AirSim"
+    liftIO $ tryCommand window $ "cp " ++ "\"" ++ absoluteFolderPath ++ "/simulator/json/settings.json\" " ++ "~/Documents/AirSim/"
+    liftIO $ tryCommand window "touch depInstalled.txt"
     runFunction $ ffi $ show $ renderJs executeScroll
 
 
@@ -215,8 +214,8 @@ como a resolução e o formato de exibição.
 -}
 launchMap :: Window -> FilePath -> UnrealEnv -> UI ()
 launchMap window simFolderPath ue = do
-  let path = "cd " ++ simFolderPath ++ "UnrealEnvironments\\" ++ ue ++ "\\"
-      cmd = "START " ++unrealProgram ue ++ resolution ++ parameters
+  let path = "cd " ++ simFolderPath ++ "UnrealEnvironments/" ++ ue ++ "/"
+      cmd = "./" ++unrealProgram ue ++".sh " ++ resolution ++ parameters ++ " &"
 
   tryDirectory window path   
 
@@ -236,7 +235,7 @@ tryCommand que executa o código em python. Em comentário uma possível impleme
 launchCode :: Window -> FilePath -> UnrealEnv -> CodeName -> Bool -> UI ()
 launchCode window simFolderPath ue cn mode = do
   let path = "cd " ++ simFolderPath
-      cmd = "python -u Run.py " ++ cn ++ " " ++ unrealProgram ue ++ " " ++ if mode then "MANUAL" else "AUTO"
+      cmd = "python3 -u Run.py " ++ cn ++ " " ++ unrealProgram ue ++ " " ++ if mode then "MANUAL" else "AUTO"
       --cmd3 = "conda activate avl & python Run.py " ++ cn ++ " " ++ unrealProgram ue ++ " " ++ if mode then "MANUAL" else "AUTO"
   
   tryDirectory window path  
@@ -323,7 +322,7 @@ getInput window ph stdin' a2 = loop
 
       when (length text > 1) $ do
         when (ord (last text) == 32) $ do
-          when (init text == "\\z" || init text == "\\c" || init text == "^C" || init text == "^Z") $ do
+          when (init text == "/z" || init text == "/c" || init text == "^C" || init text == "^Z") $ do
             --pid <- liftIO $ getPid ph
             --liftIO $ createProcess (shell $ "taskkill /F /PID "++ show (unbox pid))
             liftIO $ print "Process has been terminated" 
