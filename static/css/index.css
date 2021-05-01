@@ -1,0 +1,196 @@
+#main{
+	width: 100%; 
+	height: 100%; 
+	position: absolute; 
+	display: flex;
+}
+
+#left-page{
+	background-color: rgb(31, 31, 31); 
+	width: 50%; 
+	height: 100%; 
+	min-width: 10px;
+}
+
+#left-page-title{
+	text-align: center; 
+	color: rgb(255, 204, 0); 
+	font-size: 50px; 
+	font-weight: bold;
+	font-family: Verdana;
+	margin-top: 50px;
+}
+
+.left-page-texts{
+	text-align: center; 
+	color: white; 
+	font-size: 30px; 
+	font-weight: bold; 
+	font-style: italic; 
+	margin-top: 60px;
+}
+
+.left-page-cb{
+	margin: 20px auto auto; 
+	display: block; 
+	font-size: 30px;
+}
+
+.left-page-options{
+	font-size: 30px;
+}
+
+.left-page-buttons{
+	margin: 15px auto auto; 
+	display: block; 
+	font-size: 30px;
+}
+
+#div-manual{
+	position: relative;
+	margin: 70px auto auto; 
+	display: block; 
+	align-items: center; 
+	width: 100%; 
+	text-align: center;
+}
+
+#span-manual-mode{
+	position: relative; 
+	color: white; 
+	text-align: center; 
+	margin-left: auto; 
+	margin-right: auto; 
+	font-size: 30px; 
+	font-weight: bold; 
+	vertical-align: middle;
+}
+
+#cb-manual-mode{
+	cursor: pointer; 
+	border-radius: 1px; 
+	box-sizing: content-box; 
+	position: relative; 
+	margin-left: auto; 
+	margin-right: auto; 
+	width: 50px; 
+	height: 50px; 
+	border-width: 0px; 
+	transition: all 0.3s linear 0s; 
+	vertical-align: middle;
+}
+
+#separator-col{
+	cursor: col-resize; 
+	background-color: rgb(170, 170, 170); 
+	background-repeat: no-repeat; 
+	background-position: center center; 
+	width: 10px; 
+	height: 100%; 
+	user-select: none;
+}
+
+#right-page{
+	position: relative; 
+	width: 50%; 
+	min-width: 100px; 
+	height: 100%; 
+	display: flex; 
+	flex-direction: column;
+}
+
+#right-page-top{
+	background-color: green; 
+	position: relative; 
+	width: 100%; 
+	height: 50%;
+}
+
+#right-page-chart{
+	position: relative; 
+	width: 100%; 
+	height: 100%;
+}
+
+#separator-row{
+	cursor: row-resize;
+	background-color: rgb(170, 170, 170);
+	background-repeat: no-repeat; 
+	background-position: center center; 
+	width: 100%; 
+	height: 10px; 
+	user-select: none;
+}
+
+#right-page-bottom{
+	position: relative; 
+	background-color: black; 
+	display: flex; 
+	flex-direction: column; 
+	width: 100%; 
+	height: 50%; 
+	min-height: 100px;
+}
+
+#cmd-text{
+	margin: 6pt; 
+	min-width: 50px; 
+	color: white; 
+	font-family: 'Courier New'; 
+	white-space: pre-wrap; 
+	flex: 1 1 0%; 
+	overflow-y: auto; 
+	overflow-wrap: break-word; 
+	display: inline-block;
+}
+
+#cmd-area{
+	background-color: rgb(58, 59, 58); 
+	position: relative; 
+	box-sizing: border-box; 
+	margin: auto; 
+	height: 50px; 
+	min-height: 50px; 
+	max-height: 50px; 
+	width: 100%; 
+	flex: 1 1 0%;
+}
+
+#cmd-form{
+	background: transparent; 
+	width: 100%; 
+	margin: 10pt; 
+	border: none; 
+	outline-width: 0px; 
+	color: white; 
+	font-family: 'Courier New'; 
+	font-size: 13pt; 
+	flex: 1 1 0%;
+}
+
+#footer{
+	position: fixed; 
+	width: 100%; 
+	height: 25pt; 
+	display: block; 
+	margin: auto; 
+	align-items: center; 
+	background-color: rgb(31, 31, 31); 
+	border-top: 3px solid white; 
+	text-align: center; 
+	flex: 1 1 0%; 
+	bottom: 0px; 
+	vertical-align: middle;
+}
+
+#footer-button{
+	position: relative; 
+	color: rgb(100, 100, 100); 
+	margin-right: 25px; 
+	margin-top: 5pt; 
+	display: block; 
+	vertical-align: middle; 
+	text-align: center; 
+	float: right; 
+	font-family: 'Courier New';
+}

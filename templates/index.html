@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<!-- Título da Aplicação -->
+		<title>AVSim</title>
+
+		<!-- Arquivos CSS -->
+		<link rel="stylesheet" href="/static/css/index.css">
+
+		<!-- Arquivos JS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	</head>
+	<body>
+		<div id="main">
+			<div id="left-page">
+				<h1 id="left-page-title">AUTONOMOUS VEHICLE SIMULATOR</h1>
+
+				<h2 class="left-page-texts">Select the Map to Launch</h2>
+				<select name="cb-select-map" class="left-page-cb">
+					<option value="SSDC" class="left-page-options">SSDC</option>
+				</select>
+				<button id="btn-launch-map" class="left-page-buttons">LAUNCH</button>
+
+				<h2 class="left-page-texts">Select the Code to Launch</h2>
+				<select name="cb-select-code" class="left-page-cb">
+					<option value="Team1.py" class="left-page-options">Team1.py</option>
+					<option value="Team2.py" class="left-page-options">Team2.py</option>
+					<option value="TeamDefault.py" class="left-page-options">TeamDefault.py</option>
+					<option value="sensors.py" class="left-page-options">sensors.py</option>
+				</select>
+				<button id="btn-exec-alg" class="left-page-buttons">EXECUTE</button>
+				
+				<div id="div-manual">
+					<span id="span-manual-mode" name="span-manual-mode">MANUAL MODE: </span>
+					<input type="checkbox" id="cb-manual-mode" name="cb-manual-mode">
+				</div>
+			</div>
+			
+			<div id="separator-col">
+			</div>
+			
+			<div id="right-page">
+				<div id="right-page-top">
+					<img id="right-page-chart" src="http://127.0.0.1:8023/file/2poseXY.png">
+				</div>
+				<div id="separator-row">
+				</div>
+				<div id="right-page-bottom">
+					<p id="cmd-text">
+						C:\Users\GilmarCorreia\Documents\Documentos\Projetos\GitHub\AVL-GIT\AVSim-Windows&gt;
+						<script src="/static/js/autoScroll.js"></script>
+					</p>
+					<div id="cmd-area">
+						<input id="cmd-form" name="cmd-form" type="text" class="rq-form-element" autofocus="autofocus" placeholder="insert command">
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<footer id="footer">
+		<a id="footer-button" href="https://avleague.github.io/pt/" target="_blank">powered by Autonomous Vehicle League</a>
+	</footer>
+
+	<!-- Arquivos JS-->
+	<script src="/static/js/resize.js"></script>
+</html>
